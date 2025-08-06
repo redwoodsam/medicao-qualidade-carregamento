@@ -140,6 +140,13 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
     return value.toString().replace('.', ',');
   };
 
+  const formatDateToBrazilian = (dateString: string) => {
+    if (!dateString) return '';
+    
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR');
+  };
+
   const calculateFatorCorrecao = () => {
     if (formData.temperaturaMedida && formData.densidadeAferida) {
       // Cálculo simplificado do fator de correção
@@ -207,16 +214,8 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                     <span className="value">{romaneioDetails.codRomaneio}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="label">Cliente:</span>
-                    <span className="value">{romaneioDetails.cliente}</span>
-                  </div>
-                  <div className="detail-item">
                     <span className="label">Placa:</span>
                     <span className="value">{romaneioDetails.placaVeiculo}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="label">Produto:</span>
-                    <span className="value">{romaneioDetails.produto}</span>
                   </div>
                   <div className="detail-item">
                     <span className="label">Capacidade Veículo:</span>
@@ -225,14 +224,6 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                   <div className="detail-item">
                     <span className="label">Massa Específica a 20°:</span>
                     <span className="value">{romaneioDetails.massaEspec20}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="label">Temp. Tanque:</span>
-                    <span className="value">{romaneioDetails.temperaturaTanque}°C</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="label">Densidade Tanque:</span>
-                    <span className="value">{romaneioDetails.densidadeTanque}</span>
                   </div>
                 </div>
               </div>
@@ -340,7 +331,7 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
               </div>
               <div className="confirmation-item">
                 <span className="label">Data do Carregamento:</span>
-                <span className="value">{formData.dataCarregamento}</span>
+                <span className="value">{formatDateToBrazilian(formData.dataCarregamento)}</span>
               </div>
               <div className="confirmation-item">
                 <span className="label">Hora do Carregamento:</span>
