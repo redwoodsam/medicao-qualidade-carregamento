@@ -6,7 +6,6 @@ import RomaneioCard from '../components/RomaneioCard';
 import ApontarCarregamentoModal from '../components/ApontarCarregamentoModal';
 import SearchBar from '../components/SearchBar';
 import Toast from '../components/Toast';
-import AutoRefreshIndicator from '../components/AutoRefreshIndicator';
 import { useToast } from '../hooks/useToast';
 import './Romaneios.css';
 
@@ -64,14 +63,14 @@ const Romaneios: React.FC = () => {
     loadRomaneios(1, false);
   }, [loadRomaneios]);
 
-  // Auto-refresh a cada 10 segundos
+  // Auto-refresh a cada 10 minutos (600000ms)
   useEffect(() => {
     const interval = setInterval(() => {
-      // Só faz auto-refresh se estiver no filtro "pendente" ou "todos"
-      if (selectedFilter === 'pendente' || selectedFilter === 'todos') {
+      // Só faz auto-refresh se estiver no filtro "pendente" ou "todos" e se o modal não estiver aberto
+      if ((selectedFilter === 'pendente' || selectedFilter === 'todos') && !isModalOpen) {
         loadRomaneios(1, false, true);
       }
-    }, 10000);
+    }, 600000); // 10 minutos
 
     setAutoRefreshInterval(interval);
 
@@ -80,7 +79,7 @@ const Romaneios: React.FC = () => {
         clearInterval(interval);
       }
     };
-  }, [selectedFilter, loadRomaneios]);
+  }, [selectedFilter, loadRomaneios, isModalOpen]);
 
   // Limpar intervalo quando mudar de página
   useEffect(() => {
@@ -152,8 +151,6 @@ const Romaneios: React.FC = () => {
     return romaneios.filter(r => r.status === status).length;
   };
 
-  const isAutoRefreshActive = selectedFilter === 'pendente' || selectedFilter === 'todos';
-
   if (isLoading && page === 1) {
     return (
       <div className="romaneios-container">
@@ -196,12 +193,6 @@ const Romaneios: React.FC = () => {
         <div className="filters-section">
           <div className="filter-buttons">
             <button
-              className={`filter-button ${selectedFilter === 'todos' ? 'active' : ''}`}
-              onClick={() => setSelectedFilter('todos')}
-            >
-              Todos ({romaneios.length})
-            </button>
-            <button
               className={`filter-button ${selectedFilter === 'pendente' ? 'active' : ''}`}
               onClick={() => setSelectedFilter('pendente')}
             >
@@ -212,6 +203,12 @@ const Romaneios: React.FC = () => {
               onClick={() => setSelectedFilter('liberado')}
             >
               Liberados ({getFilterCount('liberado')})
+            </button>
+            <button
+              className={`filter-button ${selectedFilter === 'todos' ? 'active' : ''}`}
+              onClick={() => setSelectedFilter('todos')}
+            >
+              Todos ({romaneios.length})
             </button>
           </div>
         </div>
@@ -274,11 +271,6 @@ const Romaneios: React.FC = () => {
         isVisible={toast.isVisible}
         onClose={hideToast}
         duration={5000}
-      />
-
-      <AutoRefreshIndicator
-        isActive={isAutoRefreshActive}
-        lastUpdate={lastUpdate}
       />
     </div>
   );

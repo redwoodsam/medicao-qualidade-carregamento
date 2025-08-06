@@ -20,78 +20,63 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  animation: modalSlideIn 0.3s ease-out;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  position: relative;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
   border-bottom: 1px solid var(--color-border);
-  margin-bottom: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  color: var(--color-white);
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
 
 .modal-header h2 {
   margin: 0;
-  color: var(--color-text-primary);
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 28px;
-  color: var(--color-text-secondary);
+  color: var(--color-white);
+  font-size: var(--font-size-2xl);
   cursor: pointer;
-  padding: 0;
-  width: 32px;
-  height: 32px;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all var(--transition-fast);
+  width: 32px;
+  height: 32px;
 }
 
 .close-button:hover {
-  background: var(--color-gray-100);
-  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-form {
+  padding: var(--spacing-xl);
 }
 
 .error-message {
   background: #fee;
   color: var(--color-error);
-  padding: var(--spacing-md) var(--spacing-lg);
-  margin: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
-  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-lg);
   border: 1px solid #feb2b2;
   font-size: var(--font-size-sm);
-}
-
-.modal-form {
-  padding: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+  margin: var(--spacing-lg) var(--spacing-xl);
+  text-align: center;
 }
 
 .romaneio-details {
   margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-lg);
-  background: var(--color-background-secondary);
-  border-radius: var(--border-radius-lg);
-  border: 1px solid var(--color-border);
 }
 
 .romaneio-details h3 {
@@ -103,28 +88,36 @@
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-md);
+  background: var(--color-gray-50);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-border);
 }
 
 .detail-item {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
 }
 
 .detail-item .label {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
 }
 
 .detail-item .value {
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  font-weight: 600;
+  text-align: right;
 }
 
 .form-section {
@@ -132,7 +125,7 @@
 }
 
 .form-section h3 {
-  margin: 0 0 var(--spacing-lg) 0;
+  margin: 0 0 var(--spacing-md) 0;
   color: var(--color-text-primary);
   font-size: var(--font-size-lg);
   font-weight: 600;
@@ -140,17 +133,17 @@
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-lg);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
 }
 
 .form-group label {
+  margin-bottom: var(--spacing-xs);
   font-weight: 600;
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);
@@ -161,41 +154,64 @@
   padding: var(--spacing-md);
   border: 2px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   transition: all var(--transition-normal);
-  background: var(--color-background-secondary);
+  background: var(--color-white);
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
   border-color: var(--color-primary);
-  background: var(--color-white);
   box-shadow: 0 0 0 3px rgba(12, 154, 190, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+.readonly-input {
+  background: var(--color-gray-100) !important;
+  color: var(--color-text-secondary) !important;
+  cursor: not-allowed;
+  border-color: var(--color-gray-300) !important;
+}
+
+.readonly-input:focus {
+  border-color: var(--color-gray-300) !important;
+  box-shadow: none !important;
 }
 
 .modal-actions {
   display: flex;
   gap: var(--spacing-md);
   justify-content: flex-end;
-  padding-top: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
   border-top: 1px solid var(--color-border);
+  background: var(--color-gray-50);
 }
 
-.cancel-button {
-  background: var(--color-gray-100);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
+.cancel-button,
+.submit-button,
+.confirm-button {
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-normal);
+  border: 2px solid transparent;
+}
+
+.cancel-button {
+  background: var(--color-gray-200);
+  color: var(--color-text-primary);
+  border-color: var(--color-gray-300);
 }
 
 .cancel-button:hover {
-  background: var(--color-gray-200);
+  background: var(--color-gray-300);
   border-color: var(--color-gray-400);
 }
 
@@ -203,30 +219,24 @@
 .confirm-button {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   color: var(--color-white);
-  border: none;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--border-radius-md);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
+  border-color: var(--color-primary);
 }
 
-.submit-button:hover:not(:disabled),
-.confirm-button:hover:not(:disabled) {
+.submit-button:hover,
+.confirm-button:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
 .submit-button:disabled,
 .confirm-button:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 .confirmation-section {
-  padding: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+  padding: var(--spacing-xl);
 }
 
 .confirmation-section h3 {
@@ -234,22 +244,23 @@
   color: var(--color-text-primary);
   font-size: var(--font-size-lg);
   font-weight: 600;
+  text-align: center;
 }
 
 .confirmation-data {
-  background: var(--color-background-secondary);
-  border-radius: var(--border-radius-lg);
+  background: var(--color-gray-50);
   padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-xl);
 }
 
 .confirmation-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-md) 0;
-  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-gray-200);
 }
 
 .confirmation-item:last-child {
@@ -258,45 +269,54 @@
 
 .confirmation-item .label {
   font-weight: 600;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-}
-
-.confirmation-item .value {
-  font-weight: 700;
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);
 }
 
+.confirmation-item .value {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  text-align: right;
+}
+
 @media (max-width: 768px) {
+  .modal-overlay {
+    padding: var(--spacing-md);
+  }
+
   .modal-content {
-    margin: var(--spacing-sm);
     max-height: 95vh;
   }
 
   .modal-header {
-    padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .modal-header h2 {
+    font-size: var(--font-size-lg);
   }
 
   .modal-form {
-    padding: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+    padding: var(--spacing-lg);
   }
 
+  .details-grid,
   .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .details-grid {
     grid-template-columns: 1fr;
   }
 
   .modal-actions {
     flex-direction: column;
+    padding: var(--spacing-md) var(--spacing-lg);
   }
 
-  .confirmation-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-xs);
+  .cancel-button,
+  .submit-button,
+  .confirm-button {
+    width: 100%;
+  }
+
+  .confirmation-section {
+    padding: var(--spacing-lg);
   }
 }

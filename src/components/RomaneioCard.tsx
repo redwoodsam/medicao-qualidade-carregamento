@@ -49,14 +49,14 @@ const RomaneioCard: React.FC<RomaneioCardProps> = ({ romaneio, onApontarCarregam
             <span className="value">{romaneio.produto}</span>
           </div>
           <div className="info-item">
-            <span className="label">Capacidade:</span>
+            <span className="label">Capacidade Veículo:</span>
             <span className="value">{romaneio.capacidadeVeiculo} {romaneio.un}</span>
           </div>
         </div>
 
         <div className="info-row">
           <div className="info-item">
-            <span className="label">Massa Específica:</span>
+            <span className="label">Massa Específica a 20°:</span>
             <span className="value">{romaneio.massaEspec20}</span>
           </div>
           <div className="info-item">

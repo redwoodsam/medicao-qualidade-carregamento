@@ -53,6 +53,12 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
 
     if (isOpen && romaneio) {
       loadRomaneioDetails();
+      
+      // Obter data e hora atual
+      const now = new Date();
+      const currentDate = now.toISOString().split('T')[0];
+      const currentTime = now.toTimeString().split(' ')[0];
+      
       setFormData({
         codRomaneio: romaneio.codRomaneio,
         placaVeiculo: romaneio.placaVeiculo,
@@ -60,8 +66,8 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
         densidadeAferida: 0,
         fatorCorrecao: 0,
         ladoPlataforma: 'E',
-        dataCarregamento: new Date().toISOString().split('T')[0],
-        horaCarregamento: new Date().toTimeString().split(' ')[0],
+        dataCarregamento: currentDate,
+        horaCarregamento: currentTime,
       });
       setShowConfirmation(false);
       setError('');
@@ -73,6 +79,65 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
       ...prev,
       [field]: value,
     }));
+  };
+
+  const handleNumericInputChange = (field: keyof RomaneioFormData, value: string) => {
+    // Permitir apenas números
+    const numericValue = value.replace(/[^\d]/g, '');
+    
+    // Se o campo estiver vazio, definir como 0
+    if (numericValue === '') {
+      handleInputChange(field, 0);
+      return;
+    }
+    
+    let finalValue = 0;
+    
+    if (field === 'densidadeAferida') {
+      // Para densidade: 3 casas decimais (0,000)
+      // Permitir até 999,999 (6 dígitos)
+      if (numericValue.length > 6) {
+        return; // Não permitir mais de 6 dígitos
+      }
+      
+      // Converter string de dígitos para número decimal
+      // Ex: "123" -> 0.123, "1" -> 0.001, "12" -> 0.012
+      // "123456" -> 123.456
+      const paddedValue = numericValue.padStart(3, '0');
+      const integerPart = paddedValue.slice(0, -3);
+      const decimalPart = paddedValue.slice(-3);
+      
+      finalValue = parseFloat(`${integerPart}.${decimalPart}`);
+    } else if (field === 'temperaturaMedida') {
+      // Para temperatura: 1 casa decimal (0,0)
+      // Permitir até 999,9 (4 dígitos)
+      if (numericValue.length > 4) {
+        return; // Não permitir mais de 4 dígitos
+      }
+      
+      // Ex: "123" -> 12.3, "1" -> 0.1, "12" -> 1.2
+      const paddedValue = numericValue.padStart(2, '0');
+      const integerPart = paddedValue.slice(0, -1);
+      const decimalPart = paddedValue.slice(-1);
+      
+      finalValue = parseFloat(`${integerPart}.${decimalPart}`);
+    }
+    
+    handleInputChange(field, finalValue);
+  };
+
+  const formatNumericDisplay = (value: number, field: keyof RomaneioFormData) => {
+    if (value === 0) return '';
+    
+    if (field === 'densidadeAferida') {
+      // Formatar densidade com 3 casas decimais
+      return value.toFixed(3).replace('.', ',');
+    } else if (field === 'temperaturaMedida') {
+      // Formatar temperatura com 1 casa decimal
+      return value.toFixed(1).replace('.', ',');
+    }
+    
+    return value.toString().replace('.', ',');
   };
 
   const calculateFatorCorrecao = () => {
@@ -154,11 +219,11 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                     <span className="value">{romaneioDetails.produto}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="label">Capacidade:</span>
+                    <span className="label">Capacidade Veículo:</span>
                     <span className="value">{romaneioDetails.capacidadeVeiculo} {romaneioDetails.un}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="label">Massa Específica:</span>
+                    <span className="label">Massa Específica a 20°:</span>
                     <span className="value">{romaneioDetails.massaEspec20}</span>
                   </div>
                   <div className="detail-item">
@@ -179,11 +244,11 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                 <div className="form-group">
                   <label htmlFor="temperaturaMedida">Temperatura Aferida (°C) *</label>
                   <input
-                    type="number"
+                    type="text"
                     id="temperaturaMedida"
-                    step="0.1"
-                    value={formData.temperaturaMedida}
-                    onChange={(e) => handleInputChange('temperaturaMedida', parseFloat(e.target.value) || 0)}
+                    placeholder="Digite os números (ex: 123 = 12,3°C)"
+                    value={formatNumericDisplay(formData.temperaturaMedida, 'temperaturaMedida')}
+                    onChange={(e) => handleNumericInputChange('temperaturaMedida', e.target.value)}
                     required
                   />
                 </div>
@@ -191,11 +256,11 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                 <div className="form-group">
                   <label htmlFor="densidadeAferida">Densidade Aferida *</label>
                   <input
-                    type="number"
+                    type="text"
                     id="densidadeAferida"
-                    step="0.001"
-                    value={formData.densidadeAferida}
-                    onChange={(e) => handleInputChange('densidadeAferida', parseFloat(e.target.value) || 0)}
+                    placeholder="Digite os números (ex: 123 = 0,123)"
+                    value={formatNumericDisplay(formData.densidadeAferida, 'densidadeAferida')}
+                    onChange={(e) => handleNumericInputChange('densidadeAferida', e.target.value)}
                     required
                   />
                 </div>
@@ -218,8 +283,8 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                     type="date"
                     id="dataCarregamento"
                     value={formData.dataCarregamento}
-                    onChange={(e) => handleInputChange('dataCarregamento', e.target.value)}
-                    required
+                    readOnly
+                    className="readonly-input"
                   />
                 </div>
 
@@ -229,8 +294,8 @@ const ApontarCarregamentoModal: React.FC<ApontarCarregamentoModalProps> = ({
                     type="time"
                     id="horaCarregamento"
                     value={formData.horaCarregamento}
-                    onChange={(e) => handleInputChange('horaCarregamento', e.target.value)}
-                    required
+                    readOnly
+                    className="readonly-input"
                   />
                 </div>
               </div>
