@@ -1,46 +1,163 @@
-# Getting Started with Create React App
+# Sistema de Medição de Qualidade de Etanol
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Uma aplicação ReactJS moderna para medição de qualidade de etanol carregado, com interface intuitiva e responsiva.
 
-## Available Scripts
+## 🚀 Funcionalidades
 
-In the project directory, you can run:
+### Autenticação
+- Sistema de login com JWT
+- Proteção de rotas
+- Gerenciamento de sessão
 
-### `npm start`
+### Gestão de Romaneios
+- Lista de romaneios pendentes de medição
+- Filtros por status (Aguardando carregamento / Liberados)
+- Paginação infinita por rolagem
+- Cards informativos com dados completos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Apontamento de Carregamento
+- Modal com formulário de medição
+- Dados de conferência não editáveis
+- Campos para temperatura e densidade aferidas
+- Seleção de lado da plataforma
+- Tela de confirmação antes do envio
+- Cálculo automático do fator de correção
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🛠️ Tecnologias Utilizadas
 
-### `npm test`
+- **React 18** com TypeScript
+- **React Router DOM** para navegação
+- **Axios** para requisições HTTP
+- **CSS3** com design responsivo
+- **Context API** para gerenciamento de estado
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📁 Estrutura do Projeto
 
-### `npm run build`
+```
+src/
+├── components/           # Componentes reutilizáveis
+│   ├── ProtectedRoute.tsx
+│   ├── RomaneioCard.tsx
+│   ├── ApontarCarregamentoModal.tsx
+│   └── *.css
+├── contexts/            # Contextos React
+│   └── AuthContext.tsx
+├── pages/              # Páginas da aplicação
+│   ├── Login.tsx
+│   ├── Romaneios.tsx
+│   └── *.css
+├── services/           # Serviços de API
+│   └── api.ts
+├── types/              # Definições TypeScript
+│   └── index.ts
+└── App.tsx            # Componente principal
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🔧 Instalação e Execução
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Pré-requisitos
+- Node.js 16+ 
+- npm ou yarn
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Instalação
+```bash
+# Clonar o repositório
+git clone <repository-url>
+cd etanol-quality-app
 
-### `npm run eject`
+# Instalar dependências
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Executar em modo desenvolvimento
+npm start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+A aplicação estará disponível em `http://localhost:3000`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Build para Produção
+```bash
+npm run build
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 🔌 Configuração da API
 
-## Learn More
+A aplicação espera uma API REST com os seguintes endpoints:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Autenticação
+- `POST /api/auth/login` - Login do usuário
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Romaneios
+- `GET /api/romaneios` - Listar romaneios (com paginação)
+- `GET /api/romaneios/:codRomaneio` - Detalhes do romaneio
+- `POST /api/romaneios/apontar-carregamento` - Apontar carregamento
+
+### Configuração da URL da API
+Defina a variável de ambiente `REACT_APP_API_URL` ou a aplicação usará `http://localhost:3001/api` como padrão.
+
+## 📱 Design Responsivo
+
+A aplicação é totalmente responsiva e funciona em:
+- Desktop (1200px+)
+- Tablet (768px - 1199px)
+- Mobile (até 767px)
+
+## 🎨 Características do Design
+
+- **Interface Moderna**: Gradientes, sombras e animações suaves
+- **UX Intuitiva**: Navegação clara e feedback visual
+- **Acessibilidade**: Foco em elementos interativos e contraste adequado
+- **Performance**: Lazy loading e otimizações de renderização
+
+## 🔐 Segurança
+
+- Autenticação JWT
+- Interceptors para renovação automática de token
+- Redirecionamento automático em caso de token expirado
+- Validação de formulários
+
+## 📊 Funcionalidades Principais
+
+### Tela de Login
+- Formulário simples de usuário e senha
+- Validação de campos obrigatórios
+- Feedback de erro em tempo real
+- Design moderno com gradiente
+
+### Lista de Romaneios
+- Cards informativos com dados completos
+- Filtros por status com contadores
+- Paginação infinita por rolagem
+- Estados de loading e erro
+- Estado vazio com mensagem informativa
+
+### Modal de Apontamento
+- Dados de conferência não editáveis
+- Formulário para medições
+- Cálculo automático do fator de correção
+- Tela de confirmação antes do envio
+- Validação de campos obrigatórios
+
+## 🚀 Deploy
+
+A aplicação pode ser facilmente deployada em qualquer serviço de hospedagem estática:
+
+- **Netlify**: Conecte o repositório e configure o build
+- **Vercel**: Deploy automático com preview
+- **GitHub Pages**: Configure o workflow de deploy
+- **AWS S3**: Upload dos arquivos buildados
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 📞 Suporte
+
+Para dúvidas ou suporte, entre em contato através dos issues do repositório.
